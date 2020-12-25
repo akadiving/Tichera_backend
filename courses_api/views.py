@@ -7,6 +7,7 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, \
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.db import models
 
 # Create your views here.
 
@@ -24,6 +25,15 @@ class ReviewList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+    '''def get_queryset(self):
+        courses = Course.objects.filter(draft=False).annotate(
+            rating_user=models.Count("reviews",
+                                     filter=models.Q(reviews__owner=get_client_owner(self.request)))
+        ).annotate(
+            middle_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('reviews'))
+        )
+        return courses'''
 
 class ReviewCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]

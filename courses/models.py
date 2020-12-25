@@ -18,7 +18,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-#model for courses, where most of the information is stored
+# Model for courses, where most of the information is stored
 class Course(models.Model):
     USD = 'USD'
     GEL = 'GEL'
@@ -70,9 +70,9 @@ class Module(models.Model):
     class Meta:
         ordering = ['-created']
 
-#model for course review
+# Model for course review
 class Review(models.Model):
-    #review model which has a foreignkey relationship with user and course
+    # Review model which has a foreignkey relationship with user and course
     RATING = (
         (1, '1'),
         (2, '2'),
@@ -80,11 +80,12 @@ class Review(models.Model):
         (4, '4'),
         (5, '5'),
     )
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               related_name='reviews')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                              related_name='review', on_delete=models.CASCADE)
     comment = models.TextField(max_length=500, blank=True)
     rating = models.IntegerField(default=1, choices=RATING)
 
     def __str__(self):
-        return f'{self.user} {self.rating}'
+        return f'{self.owner} {self.rating}'

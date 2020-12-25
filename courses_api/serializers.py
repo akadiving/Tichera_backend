@@ -12,6 +12,7 @@ from courses.models import Course, Category, Review
 
 class CourseSerializer(serializers.ModelSerializer):
 
+
     class Meta:
         model = Course
         price = serializers.DecimalField(max_digits=10, decimal_places=2)
